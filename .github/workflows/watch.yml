@@ -17,7 +17,7 @@ jobs:
       - name: Fetch data
         id: fetch
         run: |
-          repos=$(curl -s https://raw.githubusercontent.com/async-aws/aws/master/README.md | grep -oP '^\| \[[^!\]]+\]\(https://github\.com/\Kasync-aws/[^)]+')
+          repos=$(curl -s https://raw.githubusercontent.com/async-aws/aws/master/README.md | grep -oP '^\| \[[^!\]]+\]\(https://github\.com/async-aws/\K[^)]+')
           echo "Here are the listed repos: $repos"
           echo ::set-output name=repos::$repos
 
@@ -25,11 +25,12 @@ jobs:
         run: |
           for REPOSITORY in ${{ steps.fetch.outputs.repos }}
           do
-            echo ::group::$REPOSITORY
+            echo ::group::async-aws/$REPOSITORY
             rm -rf output
-            git clone --branch master http://${{ secrets.BOT_GITHUB_TOKEN }}:x-oauth-basic@github.com/$REPOSITORY output
+            git clone --branch master http://${{ secrets.BOT_GITHUB_TOKEN }}:x-oauth-basic@github.com/async-aws/$REPOSITORY/ output
             cd output
             count=$(git rev-list --count $(git describe --abbrev=0 --tags)..HEAD)
+            echo "TODO, generate an SVG with '$count'" and write it to $REPOSITORY.svg."
             cd ..
             echo $count
             echo ::endgroup::
