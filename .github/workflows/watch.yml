@@ -17,4 +17,15 @@ jobs:
       - name: Fetch data
         id: fetch
         run: |
-          curl -s https://raw.githubusercontent.com/async-aws/aws/master/README.md | grep -oP '^\| \[[^!\]]+\]\(https://github\.com/\Kasync-aws/[^)]+\)'
+          repos=$(curl -s https://raw.githubusercontent.com/async-aws/aws/master/README.md | grep -oP '^\| \[[^!\]]+\]\(https://github\.com/\Kasync-aws/[^)]+')
+          echo "Here are the listed repos: $repos"
+          echo ::set-output name=repos::$repos
+
+      - name: Compare & Print
+        run: |
+          for REPOSITORY in ${{ steps.fetch_version.outputs.last }}
+          do
+            echo ::group::$REPOSITORY
+            echo "Now processing $REPOSITORY"
+            echo ::endgroup::
+          done
