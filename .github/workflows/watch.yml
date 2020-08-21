@@ -21,17 +21,24 @@ jobs:
           echo "Here are the listed repos: $repos"
           echo ::set-output name=repos::$repos
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@2.1.2
+        with:
+          php-version: 7.4
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Compare & Print
         run: |
           for REPOSITORY in ${{ steps.fetch.outputs.repos }}
           do
             echo ::group::async-aws/$REPOSITORY
-            rm -rf output
             git clone --branch master https://${{ secrets.BOT_GITHUB_TOKEN }}:x-oauth-basic@github.com/async-aws/$REPOSITORY/ output
             cd output
             count=$(git rev-list --count $(git describe --abbrev=0 --tags)..HEAD)
             cd ..
+            rm -rf output
             echo "TODO, generate an SVG with '$count' and write it to $REPOSITORY.svg."
-            echo $count
             echo ::endgroup::
           done
