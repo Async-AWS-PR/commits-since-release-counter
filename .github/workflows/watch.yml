@@ -23,7 +23,7 @@ jobs:
 
       - name: Compare & Print
         run: |
-          for REPOSITORY in ${{ steps.fetch_version.outputs.last }}
+          for REPOSITORY in ${{ steps.fetch.outputs.repos }}
           do
             echo ::group::$REPOSITORY
             echo "Now processing $REPOSITORY"
