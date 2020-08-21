@@ -27,7 +27,7 @@ jobs:
           do
             echo ::group::$REPOSITORY
             rm -rf output
-            git clone git@github.com:$REPOSITORY.git output
+            git clone --branch master http://${{ secrets.BOT_GITHUB_TOKEN }}:x-oauth-basic@github.com/$REPOSITORY output
             cd output
             count=$(git rev-list --count $(git describe --abbrev=0 --tags)..HEAD)
             cd ..
