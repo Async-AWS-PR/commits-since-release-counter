@@ -25,12 +25,12 @@ jobs:
         run: |
           for REPOSITORY in ${{ steps.fetch.outputs.repos }}
           do
-            echo ::group::$REPOSITORY
+            echo ::group::async-aws/$REPOSITORY
             rm -rf output
             git clone --branch master http://${{ secrets.BOT_GITHUB_TOKEN }}:x-oauth-basic@github.com/async-aws/$REPOSITORY/ output
             cd output
             count=$(git rev-list --count $(git describe --abbrev=0 --tags)..HEAD)
-            echo "TODO, generate an SVG with '$count'" and write it to $REPOSITORY.svg."
+            echo "TODO, generate an SVG with '$count' and write it to $REPOSITORY.svg."
             cd ..
             echo $count
             echo ::endgroup::
