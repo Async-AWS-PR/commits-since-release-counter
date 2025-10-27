@@ -7,7 +7,7 @@ on:
 jobs:
   update:
     name: Update source code
-    runs-on: Ubuntu-20.04
+    runs-on: Ubuntu-latest
 
     steps:
       - name: Fetch data
@@ -18,12 +18,12 @@ jobs:
           echo ::set-output name=repos::$repos
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@2
         with:
-          php-version: 7.4
+          php-version: 8.4
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
           fetch-depth: 0
